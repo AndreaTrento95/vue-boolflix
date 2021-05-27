@@ -4,7 +4,7 @@
     <Header 
       @startSearch="startSearch"
     />
-
+    <h1 v-if="results.movie.length === 0 && results.tv.length === 0"> Nessun risultato... </h1>
     <Main v-if="results.movie.length > 0" type="movie" :list="results.movie" />
     <Main v-if="results.tv.length > 0" type="tv" :list="results.tv" />
 
@@ -53,21 +53,24 @@ export default {
     },
 
     getAPI(query, type){
+      if(query !== ''){
 
-      axios.get(this.apiURL+type,{
+        axios.get(this.apiURL+type,{
         params:{
           api_key: this.apiKey,
           query: query,
           language: 'it-IT'
         }
-      })
-      .then(res => {
-        this.results[type] = res.data.results;
-        console.log(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      })
+        })
+        .then(res => {
+          this.results[type] = res.data.results;
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+
+      }
     }
   },
   
